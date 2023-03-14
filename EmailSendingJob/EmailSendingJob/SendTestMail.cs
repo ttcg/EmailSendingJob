@@ -1,12 +1,10 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using EmailSendingJob.EmailService;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace EmailSendingJob
 {
@@ -26,9 +24,20 @@ namespace EmailSendingJob
         {
             log.LogInformation("Executing SendTestMail");
 
-            _emailService.SendEmail("hello");
+            var toEmail = req.Query["to"];
 
-            return new OkObjectResult("successfully executed");
+            var isValid = EmailValidator.IsValidEmailAddress(toEmail);
+
+            string responseMessage = string.IsNullOrWhiteSpace(toEmail)
+                ? "Please pass a mandatory email address - 'to' in the query string or in the request body."
+                : $"Test Email sent to {toEmail}";
+
+            if (isValid)
+            {
+                _emailService.SendEmail(toEmail);
+            }            
+
+            return new OkObjectResult(responseMessage);
         }
     }
 }

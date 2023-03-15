@@ -5,17 +5,17 @@ using System.IO;
 
 namespace EmailSendingJob
 {
-    public class SendTestMailByBlob
+    public class SendMailByBlob
     {
         private readonly IEmailService _emailService;
 
-        public SendTestMailByBlob(IEmailService emailService)
+        public SendMailByBlob(IEmailService emailService)
         {
             _emailService = emailService;
         }
 
 
-        [FunctionName("SendTestMailByBlob")]
+        [FunctionName("SendMailByBlob")]
         public void Run([BlobTrigger("blobs/email/{name}", Connection = "AzureWebJobsStorage")]Stream myBlob, string name, ILogger log)
         {
             log.LogInformation($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {myBlob.Length} Bytes");

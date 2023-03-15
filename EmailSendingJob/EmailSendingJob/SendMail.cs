@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace EmailSendingJob
 {
-    public class SendTestMail
+    public class SendMail
     {
         private readonly IEmailService _emailService;
 
-        public SendTestMail(IEmailService emailService)
+        public SendMail(IEmailService emailService)
         {
             _emailService = emailService;
         }
 
-        [FunctionName("SendTestMail")]
+        [FunctionName("SendMail")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
